@@ -3,19 +3,18 @@
 namespace DbMigrator;
 static class DatabaseUtility
 {
-    static string connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")
-        ?? "Host=localhost;Username=postgres;Password=postgres;Port=5432;";
-    private static readonly string databaseName = "chatdb";
+    public static string ConnectionString = string.Empty;
+    private static readonly string databaseName = "chat";
 
     public static void CreateDatabase()
     {
-        using var conn = new NpgsqlConnection(connectionString);
+        using var conn = new NpgsqlConnection(ConnectionString);
         conn.Open();
 
         using var cmd = new NpgsqlCommand
         {
             Connection = conn,
-            CommandText = $"CREATE DATABASE {databaseName}"
+            CommandText = $"CREATE DATABASE {databaseName} WITH OWNER = postgres ENCODING = 'UTF8' TABLESPACE = pg_default CONNECTION LIMIT = -1;"
         };
 
         try
@@ -35,7 +34,7 @@ static class DatabaseUtility
 
     public static void ExecuteSqlScript(string scriptFilePath)
     {
-        var connectionStringWithDb = $"{connectionString}Database={databaseName};";
+        var connectionStringWithDb = $"{ConnectionString}Database={databaseName};";
 
         string script = File.ReadAllText(scriptFilePath);
 

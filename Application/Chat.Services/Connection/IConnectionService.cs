@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System.Net.WebSockets;
 
 namespace Chat.Application.Servces
 {
@@ -11,6 +12,8 @@ namespace Chat.Application.Servces
         /// Получить соединение
         /// </summary>
         /// <param name="httpContext">Информация  запросе</param>
-        Task GetConnection(HttpContext httpContext);
+        Task ConnectionHandler(WebSocket webSocket);
+
+        Task SendMessageToAllAsync(string message);
     }
 }

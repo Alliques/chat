@@ -19,11 +19,12 @@ namespace ChatServer.Controllers
         {
             if (HttpContext.WebSockets.IsWebSocketRequest)
             {
-                await _connectionService.GetConnection(HttpContext);
+                var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
+                await _connectionService.ConnectionHandler(webSocket);
             }
             else
             {
-                HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+                HttpContext.Response.StatusCode = 400;
             }
         }
     }

@@ -1,12 +1,17 @@
 ﻿
+using Microsoft.Extensions.Configuration;
 using DbMigrator;
+
+var configuration = new ConfigurationBuilder()
+                 .AddJsonFile($"appsettings.json", true, true);
+var config = configuration.Build();
+
+DatabaseUtility.ConnectionString = config.GetConnectionString("DefaultConnection");
 
 Console.WriteLine("Starting migration...");
 
-// Create the database
 DatabaseUtility.CreateDatabase();
 
-// Execute the SQL script to create the table
-DatabaseUtility.ExecuteSqlScript(Path.Combine(AppContext.BaseDirectory, "Migrations", "CreateMessagesTable.sql"));
+DatabaseUtility.ExecuteSqlScript(Path.Combine(AppContext.BaseDirectory, "Migrations", "001_CreateMessagesTable.sql"));
 
 Console.WriteLine("Migration completed.");

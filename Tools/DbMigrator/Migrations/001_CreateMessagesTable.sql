@@ -1,0 +1,5 @@
+﻿CREATE TABLE Messages (
+    id SERIAL PRIMARY KEY,
+    message TEXT NOT NULL,
+    date TIMESTAMP NOT NULL
+);
